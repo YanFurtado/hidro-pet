@@ -39,7 +39,11 @@
     who: store.get('hidro_who', ''),
   };
 
-  let authRequired = false;
+  let authRequired = false, storage = { kind: 'arquivo', names: [] };
+  const storageBanner = () => storage.kind !== 'temporario' ? '' : `<section class="panel" style="border-color:var(--warn);background:var(--warn-l)">
+    <b>⚠ Os dados NÃO estão sendo guardados de forma permanente.</b>
+    <p class="hint" style="margin-top:4px;color:inherit">O armazenamento (Upstash Redis) não foi encontrado neste projeto da Vercel. Os dados podem sumir a qualquer momento. Conecte o Upstash em Storage e faça Redeploy.</p>
+    <p class="hint" style="margin-top:4px;color:inherit">Variáveis de armazenamento encontradas: ${storage.names.length ? esc(storage.names.join(', ')) : 'nenhuma'}</p></section>`;
   async function load() {
     try {
       const r = await fetch('/api/state', { cache: 'no-store' });
@@ -47,6 +51,7 @@
       if (!r.ok) throw new Error();
       const j = await r.json();
       S = Object.assign(C.emptyState(), j.state); authRequired = !!j.authRequired; mode = 'server';
+      storage = { kind: j.storage || 'arquivo', names: j.envNames || [] };
     } catch (e) {
       try { S = Object.assign(C.emptyState(), JSON.parse(store.get('hidro_state', 'null')) || {}); } catch (e2) { S = C.emptyState(); }
       mode = 'local';
@@ -132,7 +137,7 @@
     const tabs = [['Agenda', '📅'], ['Chamada', '✅'], ['Alunos', '👥'], ['Relatórios', '📊'], ['Equipe', '⚙️']];
     nav.innerHTML = tabs.map(([n, i]) => `<button data-act="tab" data-tab="${n}" ${ui.tab === n ? 'aria-current="page"' : ''}><span class="ico">${i}</span><span>${n}</span></button>`).join('');
     const fn = { Agenda: vAgenda, Chamada: vChamada, Alunos: vAlunos, 'Relatórios': vRelatorios, Equipe: vEquipe }[ui.tab];
-    view.innerHTML = fn();
+    view.innerHTML = storageBanner() + fn();
     if (ui.tab === 'Chamada') bindCallSearch();
     if (ui.tab === 'Alunos') bindStuSearch();
     if (ui.tab === 'Equipe') loadSnaps();
@@ -541,6 +546,7 @@
       const r = await fetch('/api/state', { cache: 'no-store' });
       if (r.status === 401) return showLogin();
       const j = await r.json();
+      if (j.storage) storage = { kind: j.storage, names: j.envNames || [] };
       if (j.state.rev !== S.rev) { S = Object.assign(C.emptyState(), j.state); render(); }
       if (force) toast('Dados atualizados.');
     } catch (e) { if (force) toast('Sem conexão com o servidor.', true); }

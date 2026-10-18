@@ -8,7 +8,7 @@ const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.webmanifest': 'application/manifest+json',
 };
-const ROUTES = new Set(['state', 'action', 'restore', 'login', 'snapshots']);
+const ROUTES = new Set(['state', 'action', 'restore', 'login', 'snapshots', 'health']);
 const readBody = (req) => new Promise((ok) => {
   let b = '';
   req.on('data', (d) => { b += d; if (b.length > 5e6) req.destroy(); });
