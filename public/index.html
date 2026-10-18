@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e7c86">
+  <title>Hidro PET</title>
+  <meta name="description" content="Controle de presença Hidro PET para as turmas de hidroginástica de terças e quintas.">
+  <link rel="icon" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <a class="brand" href="./" aria-label="Hidro PET, início">
+        <span class="pet-logo-frame"><img src="logo.png" alt=""></span>
+        <span>Hidro PET<small>LISTA DE PRESENÇA</small></span>
+      </a>
+      <label class="whoami">Quem está usando
+        <select id="who"></select>
+      </label>
+    </header>
+    <nav class="main-nav" id="nav" aria-label="Navegação principal"></nav>
+    <main class="workspace" id="view"></main>
+    <footer class="app-footer">Hidro PET · Terças e quintas · Turma 1: 16h–17h · Turma 2: 17h–18h <span id="sync"></span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal"></dialog>
+  <script src="core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
