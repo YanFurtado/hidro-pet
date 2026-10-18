@@ -1,0 +1,8 @@
+{
+  "name": "hidro-pet",
+  "version": "1.0.0",
+  "description": "Controle de presença Hidro PET (terças e quintas)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
