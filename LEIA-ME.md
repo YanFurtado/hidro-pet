@@ -9,13 +9,14 @@ A Vercel não tem disco para guardar arquivos, então os dados ficam no **Upstas
 
 1. **Suba a pasta `hidro-pet`** para um repositório no GitHub (ou use `npx vercel` dentro da pasta).
 2. Na Vercel: **Add New → Project** → escolha o repositório. Framework Preset: **Other**. Não precisa de build. Clique em Deploy.
-3. No projeto, aba **Storage** (ou Marketplace) → crie um **Upstash Redis** (plano Free) e conecte ao projeto.
-   Isso cria sozinho as variáveis `KV_REST_API_URL` e `KV_REST_API_TOKEN` (ou `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`). O app aceita as duas formas.
-4. Em **Settings → Environment Variables**, crie **`ACCESS_CODE`** com o código da equipe (ex.: uma frase de 8+ caracteres).
-5. Em **Deployments**, faça **Redeploy** (as variáveis só valem em novos deploys).
-6. Abra o endereço, digite o código, e cadastre professores e alunos. Mande o endereço e o código aos professores.
+3. Em **Settings → Environment Variables**, crie **`ACCESS_CODE`** (com dois C) com o código da equipe (ex.: uma frase de 8+ caracteres).
+4. Em **Deployments**, faça **Redeploy** (as variáveis só valem em novos deploys).
+5. Abra o endereço, digite o código, e cadastre professores e alunos. Mande o endereço e o código aos professores.
+6. **Recomendado:** aba **Storage** → crie um **Upstash Redis** (plano Free) e conecte ao projeto. Isso cria sozinho as variáveis `KV_REST_API_URL` e `KV_REST_API_TOKEN` (ou `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`; o app aceita as duas formas). Depois, faça Redeploy.
 
-Se faltar alguma variável, o app mostra um aviso dizendo o que falta (não expõe dados).
+**Sem o Redis, os dados NÃO ficam guardados de forma segura na Vercel.** Eles ficam na pasta temporária de cada instância do servidor: somem quando a instância reinicia (depois de um tempo sem uso) e podem ser diferentes de um celular para outro. Sem Redis, use o app só para testar, ou baixe uma cópia (aba Equipe) com frequência.
+
+Se faltar o `ACCESS_CODE`, o app mostra um aviso e não expõe dados.
 
 ## Como funciona
 - **Código de acesso:** digitado uma vez por aparelho (fica lembrado por 180 dias). Para trocar o código, mude `ACCESS_CODE` e faça Redeploy: todos os aparelhos precisarão do novo código. Depois de 10 erros, o IP fica bloqueado por 15 minutos.
